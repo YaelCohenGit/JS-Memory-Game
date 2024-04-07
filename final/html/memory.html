@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/memory.css">
+    <title>Memory Game</title>
+</head>
+
+<body onload="onPageLoad()">
+    <div id="myDiv"></div>
+    <div id="backgroundPic">
+        <center>
+            <h1>Color-full Memory Game</h1>
+            <table id="tblMemeryGameMain">
+            </table>
+        </center>
+        <form name="form_main">
+            <div id="countdown">
+                <div><span id="minute">00</span>:<span id="second">00</span>:<span id="millisecond">000</span>
+                    <div id='tiles' class="color-full">
+                    </div>
+                    <div id="left" class="countdown-label"><button type="button" name="pause">pause</button></div>
+                </div>
+        </form>
+        <!-- <span class="loader"></span>  -->
+    </div>
+
+    <audio id="end_audio" src="../audio/game_win.mp3"></audio>
+    <audio id="mid_audio" src="../audio/level-win-6416.mp3"></audio>
+    <audio id="loser_audio" src="../audio/game-lose-sound.mp3"></audio>
+<div id ="Instructions"> 
+    Instructions: <br>The goal of the game is to collect the most pairs of cards:
+    -If you manage to match a pair, they will remain visible -When a player turns over two cards that don't match, <br>
+    those cards are turned face down again The trick is to remember which cards are where!
+</div>
+    <script src="../js/memory.js"></script>
+</body>
+
+
+</html>
