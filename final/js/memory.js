@@ -1,4 +1,5 @@
-let cards;
+var cards;
+
 function initCardsArray() {
   cards = [
     { pic: "purple", id: 1, pairId: 16, isClicked: false, isPairFoud: false }, { pic: "red", id: 2, pairId: 15, isClicked: false, isPairFoud: false }, { pic: "orange", id: 3, pairId: 14, isClicked: false, isPairFoud: false }, { pic: "silver", id: 4, pairId: 13, isClicked: false, isPairFoud: false, isPairFoud: false },
@@ -8,17 +9,16 @@ function initCardsArray() {
   ];
 }
 
-//a js table - the game board
-function ConnectBetweenCardsAndHTMLTable() {
+function ConnectBetweenCardsAndTable() {
   var tr, table = '';
-  for (var i = 0; i < cards.length; i++) {
+  for (let i = 0; i < cards.length; i++) {
     tr = '';
-    if (1 % 4 == 0)//i==0 ||i==4 || i==12 || i==8)//i+1%4 == 0)//0,3,7,11// מתי לרדת שורה
+    if (1 % 4 == 0)//0,3,7,11  when to go down a line
     {
       tr = '<tr>';
     }
     tr += '<td id=' + cards[i].id + ' class="tdCls tdClsHiddenCards" style="background-color:' + cards[i].pic + '"></td>';
-    if ((i + 1) % 4 == 0)//i==15 ||i==11 || i==3 || i==7)// מתי לסגור שורה
+    if ((i + 1) % 4 == 0)// when to close a line
     {
       tr += '</tr>';
     }
@@ -27,27 +27,15 @@ function ConnectBetweenCardsAndHTMLTable() {
   return table;
 }
 
-
 function onPageLoad() {
   initCardsArray();
   var table = document.getElementById("tblMemeryGameMain");
-  table.innerHTML = ConnectBetweenCardsAndHTMLTable(); // makes the table visible
+  table.innerHTML = ConnectBetweenCardsAndTable();
   var tds = document.getElementsByClassName('tdCls');
-  for (var i = 0; i < tds.length; i++) {
+  for (let i = 0; i < tds.length; i++) {
     tds[i].addEventListener('click', onCardClick)
   }
-  // shuffleCards();
 }
-
-// function shuffleCards() {
-//     document.querySelectorAll('.tdCls').forEach(card => {
-//       let randomPos = Math.floor(Math.random() * 16);
-//       for(i=0; i>15; i++){
-//         document.cards[i].id = randomPos;
-//         document.cards[i].pairId = 16-(document.cards[i].id);
-//       }
-//     });
-//   }
 
 function onCardClick() {
   start_timer();
@@ -56,26 +44,22 @@ function onCardClick() {
   var clickedElementsWithoutFoundPairYet = cards.filter(card => card.isClicked && !card.isPairFoud);
   var clickedElementsWithoutFoundPairYetCounter = clickedElementsWithoutFoundPairYet == undefined ? 0 : clickedElementsWithoutFoundPairYet.length;
   this.classList.remove('tdClsHiddenCards'); //shows the color of the card
-  //regarding only the cards which was clicked but their pair wasnt found yet
-  if (clickedElementsWithoutFoundPairYetCounter == 2) {//regarding only the clicked cards which their pair wasn't found yet
+  if (clickedElementsWithoutFoundPairYetCounter == 2) { //regarding only the clicked cards which their pair wasn't found yet
     if (clickedElementsWithoutFoundPairYet[0].pairId == clickedElementsWithoutFoundPairYet[1].id) {
       clickedElementsWithoutFoundPairYet.forEach(e => document.getElementById(e.id).classList.add('tdClsFound'));
 
       let myAudio = document.querySelector('#mid_audio')
       myAudio.play()
 
-      cards.filter(c => c.isClicked && !c.isPairFoud).forEach(e => e.isPairFoud = true); // same as: document.getElementById(clickedElements[0].id).classList.add('tdClsFound'); + document.getElementById(clickedElements[1].id).classList.add('tdClsFound');
+      cards.filter(c => c.isClicked && !c.isPairFoud).forEach(e => e.isPairFoud = true); 
     } else {
-      // document.querySelectorAll('.tdCls').forEach(e => e.classList.add('tdClsHiddenCards'));
-      //cards.forEach(card => card.isClicked = false);
-
       setTimeout(function () {
         clickedElementsWithoutFoundPairYet.forEach(e => document.getElementById(e.id).classList.add('tdClsHiddenCards'));
         cards.filter(e => !e.isPairFoud && e.isClicked).forEach(e => e.isClicked = false);
       }, 200);
     }
-
   }
+
   let x = document.querySelectorAll('.tdClsHiddenCards');
   if (x.length == 0) {
     let endAudio = document.querySelector('#end_audio')
@@ -86,48 +70,6 @@ function onCardClick() {
     seconds_achived = document.getElementById('second').innerText = returnData(second);
     milliseconds_achived = document.getElementById('millisecond').innerText = returnData(millisecond);
     total_score = minutes_achived + seconds_achived;
-
-  //   let scores_array = [];
-  //   scores_array.unshift(total_score);
-  //  document.getElementById('divi').innerText.forEach( item => {
-  //     <li>+scores_array+</li>
-  //  });
-   //     document.querySelectorAll('.tdCls').forEach(card => {
-//       let randomPos = Math.floor(Math.random() * 16);
-//       for(i=0; i>15; i++){
-//         document.cards[i].id = randomPos;
-//         document.cards[i].pairId = 16-(document.cards[i].id);
-//       }
-//     });
-
-    // console.log(scores_array);
-
-    // const div = document.createElement("div");
-    // div.style.width = "100px";
-    // div.style.height = "100px";
-    // div.style.background = "red";
-    // div.style.color = "white";
-    // div.innerHTML = "0";
-    //  t = document.body.appendChild(div);
-    // t.appendChild(scores_array);
-
-    // let winners = [
-    //   { order: "first_place", name: "", minutes: 0, seconds: 0 }, { order: "second_place", name: "", minutes: 0, seconds: 0 }, { order: "third_place", name: "", minutes: 0, seconds: 0 },
-    // ];
-    //   winners.forEach(function (value, i) {
-    //     if(winner.minutes + winner.seconds > minutes_achived + seconds_achived){
-    //       winners[i].minutes = minutes_achived;
-    //       winners[i].seconds = seconds_achived;
-    //       break;
-    //     }
-    // });
-
-    // if (minutes_achived + seconds_achived > (winners[0].minutes + winners[0].seconds))
-    //   localStorage.setItem("winners", JSON.stringify(winners));
-    // const allwinners = JSON.parse(localStorage.getItem('winners')) || [];
-    // const winner = JSON.parse(localStorage.getItem("winners")) || [];
-
-
     alert('You Won! your score is ' + minutes_achived + ' minutes plus ' + seconds_achived + ' seconds!');
     var retVal = confirm("Do you want to play again ?");
     if (retVal == true) {
@@ -138,11 +80,10 @@ function onCardClick() {
       return false;
     }
   }
-
-
 }
 
-// from here logic of timer from: https://dev.to/walternascimentobarroso/creating-a-timer-with-javascript-8b7
+//#region timer logic
+//from: https://dev.to/walternascimentobarroso/creating-a-timer-with-javascript-8b7
 let minute = 0;
 let second = 0;
 let millisecond = 0;
@@ -193,10 +134,9 @@ function reset_timer() {
   second = 0;
   millisecond = 0;
 }
-// till here logic of timer
+//#endregion
 
-
-// from here date
+//#region Date
 function showDateTime() {
   var myDiv = document.getElementById("myDiv");
 
@@ -227,8 +167,9 @@ function showDateTime() {
   var time = hour + ":" + min + ":" + sec;
   myDiv.innerText = ` Bs"d, Today is  ${today}. Time is ${time}`;
 }
-setInterval(showDateTime, 0000);
-// till here date
+setInterval(showDateTime, 0);
+//#endregion
+
 
 
 //document.getElementsByClassName('tdCls')  OR  document.querySelectorAll('.tdCls')
